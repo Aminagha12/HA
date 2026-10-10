@@ -41,6 +41,12 @@ jobs:
           npx cap add android || true
           npx cap sync android
 
+      - name: Remove google-services plugin
+        run: |
+          sed -i "/com.google.gms:google-services/d" android/build.gradle
+          find android -name "*.gradle" -exec sed -i "/apply plugin.*google-services/d" {} \;
+          find android -name "google-services.json" -delete || true
+
       - name: Fix gradlew permission
         run: chmod +x android/gradlew
 
