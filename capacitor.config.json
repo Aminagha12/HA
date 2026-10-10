@@ -3,7 +3,11 @@
   "appName": "Forex Robot Signal Bot",
   "webDir": "dist",
   "server": {
-    "androidScheme": "https",
-    "cleartext": false
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "CapacitorHttp": {
+      "enabled": true
+    }
   }
 }
