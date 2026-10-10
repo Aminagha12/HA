@@ -179,8 +179,8 @@ const generateSignal = (candles) => {
 
   let direction="NEUTRAL";
   // threshold=6, د trend سره موافق وي
-  if(buy>=6&&buy>sell*1.3&&trendUp)   direction="BUY";
-  else if(sell>=6&&sell>buy*1.3&&trendDown) direction="SELL";
+  if(buy>=5&&buy>sell*1.2) direction="BUY";
+else if(sell>=5&&sell>buy*1.2) direction="SELL";
 
   if(direction==="NEUTRAL")
     return {direction:"NEUTRAL",macd:macdC,signal:sigC,rsi:rsiC};
