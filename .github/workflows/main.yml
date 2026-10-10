@@ -1,0 +1,79 @@
+name: Build Forex Robot APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # ── 1. Code ──────────────────────────────────────
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # ── 2. Node.js ───────────────────────────────────
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # ── 3. Java ──────────────────────────────────────
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # ── 4. Android SDK ───────────────────────────────
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      # ── 5. API Keys ──────────────────────────────────
+      - name: Create .env file
+        run: |
+          echo "VITE_BINANCE_API_KEY=${{ secrets.VITE_BINANCE_API_KEY }}" > .env
+          echo "VITE_BINANCE_SECRET_KEY=${{ secrets.VITE_BINANCE_SECRET_KEY }}" >> .env
+
+      # ── 6. Install ───────────────────────────────────
+      - name: Install npm packages
+        run: npm install
+
+      # ── 7. Web Build ─────────────────────────────────
+      - name: Build Vite app
+        run: npm run build
+
+      # ── 8. Capacitor ─────────────────────────────────
+      - name: Init Capacitor Android
+        run: |
+          npx cap add android || true
+          npx cap sync android
+
+      # ── 9. Gradle Permission ─────────────────────────
+      - name: Fix gradlew permission
+        run: chmod +x android/gradlew
+
+      # ── 10. Accept Android Licenses ──────────────────
+      - name: Accept SDK licenses
+        run: yes | sdkmanager --licenses || true
+
+      # ── 11. Build APK ────────────────────────────────
+      - name: Build debug APK
+        run: |
+          cd android
+          ./gradlew assembleDebug \
+            --no-daemon \
+            --stacktrace \
+            -Pandroid.useAndroidX=true \
+            -Pandroid.enableJetifier=true
+
+      # ── 12. Upload ───────────────────────────────────
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ForexRobotSignalBot-APK
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 30
