@@ -1,0 +1,9 @@
+{
+  "appId": "com.hamidi.forexrobot",
+  "appName": "Forex Robot Signal Bot",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https",
+    "cleartext": false
+  }
+}
