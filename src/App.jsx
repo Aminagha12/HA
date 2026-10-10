@@ -181,8 +181,8 @@ const generateSignal = (candles) => {
   }
 
   let direction = "NEUTRAL";
-  if (buy>=7&&buy>sell*1.4) direction = "BUY";
-  else if (sell>=7&&sell>buy*1.4) direction = "SELL";
+  if (buy>=4&&buy>sell*1.1) direction = "BUY";
+else if (sell>=4&&sell>buy*1.1) direction = "SELL";
 
   if (direction==="NEUTRAL")
     return { direction:"NEUTRAL", macd:macdC, signal:sigC, rsi:rsiC };
