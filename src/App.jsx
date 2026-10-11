@@ -507,13 +507,28 @@ export default function App() {
                       <span style={{color:"#fff",fontWeight:700,fontSize:14,fontFamily:"monospace"}}>{fmt(sig.entry,sym.decimals)}</span>
                     </div>
                     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                      <span style={{color:"#f44336",fontSize:13}}>🔴 Stop Loss (1.0×ATR):</span>
-                      <span style={{color:"#ff6b6b",fontWeight:700,fontSize:14,fontFamily:"monospace"}}>{fmt(sig.stopLoss,sym.decimals)}</span>
-                    </div>
-                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                      <span style={{color:"#00c853",fontSize:13}}>🟢 Take Profit (1.4×ATR):</span>
-                      <span style={{color:"#69f0ae",fontWeight:700,fontSize:14,fontFamily:"monospace"}}>{fmt(sig.takeProfit,sym.decimals)}</span>
-                    </div>
+  <span style={{color:"#f44336",fontSize:13}}>🔴 Stop Loss (1.0×ATR):</span>
+  <span style={{color:"#ff6b6b",fontWeight:700,fontSize:14,fontFamily:"monospace"}}>
+    {fmt(sig.stopLoss,sym.decimals)}
+    <span style={{color:"#804040",fontSize:11,marginLeft:6}}>
+      ({sig.direction==="BUY"?"-":"+"}
+      {sig.atr!=null?sig.atr.toFixed(sym.decimals):"—"} pts)
+    </span>
+  </span>
+</div>
+<div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+  <span style={{color:"#00c853",fontSize:13}}>🟢 Take Profit (1.4×ATR):</span>
+  <span style={{color:"#69f0ae",fontWeight:700,fontSize:14,fontFamily:"monospace"}}>
+    {fmt(sig.takeProfit,sym.decimals)}
+    <span style={{color:"#407040",fontSize:11,marginLeft:6}}>
+      ({sig.direction==="BUY"?"+":"-"}
+      {sig.atr!=null?(sig.atr*1.4).toFixed(sym.decimals):"—"} pts)
+    </span>
+  </span>
+</div>
+<div style={{background:"rgba(0,200,255,0.04)",border:"1px solid rgba(0,200,255,0.1)",borderRadius:8,padding:"8px 10px",marginTop:8,fontSize:11,color:"#4a8090"}}>
+  💡 د خپل Broker قیمت نه ATR distance وکاروئ
+</div>
                   </div>
                   <div style={{borderTop:"1px solid rgba(0,200,255,0.1)",paddingTop:10,fontSize:11,color:"#4a6878",display:"flex",gap:12,flexWrap:"wrap"}}>
                     {sig.macd!=null&&<span>MACD: {sig.macd.toFixed(4)}</span>}
